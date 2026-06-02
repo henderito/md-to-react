@@ -1,7 +1,3 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
-# Only prompt for normal commits or 'message' commits (not merges, squashes, etc.)
 if [ -n "$2" ] && [ "$2" != "message" ]; then
   exit 0
 fi
