@@ -1,3 +1,7 @@
+if [ "$CI" = "true" ] || [ -n "$CI" ]; then
+  exit 0
+fi
+
 if [ -n "$2" ] && [ "$2" != "message" ]; then
   exit 0
 fi
