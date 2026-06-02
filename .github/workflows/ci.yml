@@ -24,7 +24,11 @@ jobs:
             git log origin/${{ github.base_ref }}...HEAD --format=%B > commits.txt
             echo "${{ github.event.pull_request.title }}" >> commits.txt
           else
-            echo "${{ github.event.head_commit.message }}" > commits.txt
+            if [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ]; then
+              git log -1 --format=%B > commits.txt
+            else
+              git log ${{ github.event.before }}..${{ github.sha }} --format=%B > commits.txt
+            fi
           fi
           
           if grep -iE '\[patch\]|\[minor\]|\[major\]' commits.txt; then
@@ -88,7 +92,12 @@ jobs:
           
       - name: Extract Bump Type and Publish
         run: |
-          MSG="${{ github.event.head_commit.message }}"
+          if [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ]; then
+            MSG=$(git log -1 --format=%B)
+          else
+            MSG=$(git log ${{ github.event.before }}..${{ github.sha }} --format=%B)
+          fi
+          
           if echo "$MSG" | grep -i '\[major\]'; then
             BUMP="major"
           elif echo "$MSG" | grep -i '\[minor\]'; then
