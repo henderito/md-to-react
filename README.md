@@ -162,8 +162,18 @@ const template: TemplateDefinition = {
 <MarkdownReact markdown={markdown} template={template} />;
 ```
 
+## Architecture & Development
+
+### Parsing Engine
+The package uses [marked](https://marked.js.org/) to parse Markdown into a spec-compliant Abstract Syntax Tree (AST). It includes a custom `marked` extension to support `::directive` block syntax.
+
+### Contributing
+This repository is configured with local hooks and automated CI/CD:
+- **Husky Hooks**: 
+  - `pre-commit`: Automatically runs typechecking, tests (`vitest`), and builds the package.
+  - `prepare-commit-msg`: Intercepts `git commit` to ask if you want a version bump. If so, it appends the correct tag (`[patch]`, `[minor]`, or `[major]`) to your commit message.
+- **CI/CD**: Pushes and PRs to `master` trigger an automated GitHub Actions pipeline. If a version bump tag is detected in the commit message and `changelog.md` is modified, the pipeline automatically bumps the version, pushes tags, and publishes the package to NPM.
+
 ## Current Scope
 
-This first version is a focused library scaffold: parser, renderer, templates,
-styles, and code generation. A future CLI could turn a folder of Markdown files
-into generated `.tsx` pages on disk.
+This first version (0.0.1) is a focused library scaffold: parser, renderer, templates, styles, and code generation. A future CLI could turn a folder of Markdown files into generated `.tsx` pages on disk.

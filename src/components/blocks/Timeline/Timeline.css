@@ -1,0 +1,24 @@
+.mdr-timeline {
+  border-left: 1px solid var(--mdr-border);
+  display: grid;
+  gap: 18px;
+  list-style: none;
+  margin: 28px 0;
+  padding: 0 0 0 20px;
+}
+
+.mdr-timeline__item {
+  color: var(--mdr-text);
+  position: relative;
+}
+
+.mdr-timeline__item::before {
+  background: var(--mdr-primary);
+  border-radius: 50%;
+  content: "";
+  height: 8px;
+  left: -25px;
+  position: absolute;
+  top: 9px;
+  width: 8px;
+}

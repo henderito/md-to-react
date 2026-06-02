@@ -1,0 +1,79 @@
+.mdr-alert {
+  border-radius: 6px;
+  margin: 28px 0;
+  padding: 16px 20px;
+  display: flex;
+  gap: 12px;
+  font-size: 15px;
+}
+
+/* Antigravity alerts (Glowing border and dark tinted container) */
+.mdr-theme--antigravity .mdr-alert--info {
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.05);
+}
+
+.mdr-theme--antigravity .mdr-alert--warning {
+  background: rgba(240, 136, 62, 0.08);
+  border: 1px solid rgba(240, 136, 62, 0.25);
+  box-shadow: 0 0 10px rgba(240, 136, 62, 0.05);
+}
+
+.mdr-theme--antigravity .mdr-alert--error {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.05);
+}
+
+.mdr-theme--antigravity .mdr-alert--success {
+  background: rgba(34, 197, 94, 0.08);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.05);
+}
+
+/* Classic alerts (Flat background, strong border left) */
+.mdr-theme--classic .mdr-alert--info {
+  background: #f0f7ff;
+  border-left: 4px solid #0969da;
+  border-top: 1px solid rgba(9, 105, 218, 0.1);
+  border-right: 1px solid rgba(9, 105, 218, 0.1);
+  border-bottom: 1px solid rgba(9, 105, 218, 0.1);
+  color: #091e42;
+}
+
+.mdr-theme--classic .mdr-alert--warning {
+  background: #fff8eb;
+  border-left: 4px solid #bf8700;
+  border-top: 1px solid rgba(191, 135, 0, 0.1);
+  border-right: 1px solid rgba(191, 135, 0, 0.1);
+  border-bottom: 1px solid rgba(191, 135, 0, 0.1);
+  color: #bf8700;
+}
+
+.mdr-theme--classic .mdr-alert--error {
+  background: #ffebe9;
+  border-left: 4px solid #cf222e;
+  border-top: 1px solid rgba(207, 34, 46, 0.1);
+  border-right: 1px solid rgba(207, 34, 46, 0.1);
+  border-bottom: 1px solid rgba(207, 34, 46, 0.1);
+  color: #cf222e;
+}
+
+.mdr-theme--classic .mdr-alert--success {
+  background: #dafbe1;
+  border-left: 4px solid #1a7f37;
+  border-top: 1px solid rgba(26, 127, 55, 0.1);
+  border-right: 1px solid rgba(26, 127, 55, 0.1);
+  border-bottom: 1px solid rgba(26, 127, 55, 0.1);
+  color: #1a7f37;
+}
+
+.mdr-alert__icon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.mdr-alert__content {
+  flex-grow: 1;
+}

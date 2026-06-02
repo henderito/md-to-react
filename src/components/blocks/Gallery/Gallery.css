@@ -1,0 +1,14 @@
+.mdr-gallery {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin: 28px 0;
+}
+
+.mdr-gallery__image {
+  aspect-ratio: 16 / 10;
+  border-radius: 8px;
+  object-fit: cover;
+  width: 100%;
+  border: 1px solid var(--mdr-border);
+}

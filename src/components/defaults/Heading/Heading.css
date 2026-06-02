@@ -1,0 +1,23 @@
+.mdr-heading {
+  color: var(--mdr-text-highlight);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+
+.mdr-heading--1 {
+  font-size: 42px;
+  margin: 0 0 24px;
+}
+
+.mdr-heading--2 {
+  font-size: 28px;
+  margin: 44px 0 16px;
+  border-bottom: 1px solid var(--mdr-border);
+  padding-bottom: 8px;
+}
+
+.mdr-heading--3 {
+  font-size: 20px;
+  margin: 32px 0 12px;
+}

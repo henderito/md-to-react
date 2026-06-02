@@ -1,0 +1,26 @@
+.mdr-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 20px 0;
+}
+
+.mdr-badge {
+  font-size: 13px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-family: var(--mdr-font);
+}
+
+.mdr-theme--antigravity .mdr-badge {
+  background: rgba(56, 189, 248, 0.1);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+.mdr-theme--classic .mdr-badge {
+  background: #eaeef2;
+  color: #24292f;
+  border: 1px solid #d0d7de;
+}

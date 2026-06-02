@@ -1,24 +1,25 @@
 import { createElement, type ReactNode } from 'react';
 import type { Tokens } from 'marked';
-import { parseMarkdown } from './parser.js';
-import { getTemplate } from './templates.js';
-import { injectStyles } from './styles.js';
+import { parseMarkdown } from '../../parser.js';
+import { getTemplate } from '../../templates.js';
+import { injectStyles } from '../../styles.js';
 import type {
-  CodeComponentProps,
   CompileOptions,
-  HeadingComponentProps,
-  ListComponentProps,
-  ListItemComponentProps,
   MarkdownNode,
   MarkdownReactProps,
   RendererComponents,
   TemplateDefinition,
-  TextComponentProps,
-  TableComponentProps,
-  BlockquoteComponentProps,
   ThemeName,
   DirectiveNode,
-} from './types.js';
+} from '../../types.js';
+
+import { DefaultHeading } from '../defaults/Heading/Heading.js';
+import { DefaultParagraph } from '../defaults/Paragraph/Paragraph.js';
+import { DefaultList } from '../defaults/List/List.js';
+import { DefaultListItem } from '../defaults/ListItem/ListItem.js';
+import { DefaultCode } from '../defaults/Code/Code.js';
+import { DefaultTable } from '../defaults/Table/Table.js';
+import { DefaultBlockquote } from '../defaults/Blockquote/Blockquote.js';
 
 if (typeof window !== 'undefined') {
   injectStyles();
@@ -27,43 +28,6 @@ if (typeof window !== 'undefined') {
 function resolveTemplate(template?: string | TemplateDefinition) {
   if (typeof template === 'object') return template;
   return getTemplate(template);
-}
-
-function DefaultHeading({ node, children }: HeadingComponentProps) {
-  return createElement(
-    `h${node.depth}`,
-    { className: `mdr-heading mdr-heading--${node.depth}` },
-    children,
-  );
-}
-
-function DefaultParagraph({ children }: TextComponentProps) {
-  return <p className="mdr-paragraph">{children}</p>;
-}
-
-function DefaultList({ node, children }: ListComponentProps) {
-  const Tag = node.ordered ? 'ol' : 'ul';
-  return <Tag className="mdr-list">{children}</Tag>;
-}
-
-function DefaultListItem({ children }: ListItemComponentProps) {
-  return <li className="mdr-list-item">{children}</li>;
-}
-
-function DefaultCode({ node }: CodeComponentProps) {
-  return (
-    <pre className="mdr-code">
-      <code data-language={node.lang}>{node.text}</code>
-    </pre>
-  );
-}
-
-function DefaultTable({ children }: TableComponentProps) {
-  return <table className="mdr-table">{children}</table>;
-}
-
-function DefaultBlockquote({ children }: BlockquoteComponentProps) {
-  return <blockquote className="mdr-blockquote">{children}</blockquote>;
 }
 
 const defaultComponents: RendererComponents = {

@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { createElement, act } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
-import { MarkdownReact, createMarkdownComponent, compileMarkdownToModule } from './render.js';
-import { templates } from './templates.js';
+import { MarkdownReact, createMarkdownComponent, compileMarkdownToModule } from './MarkdownReact.js';
+import { templates } from '../../templates.js';
 
 // Setup React testing environment
 (globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;

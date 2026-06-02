@@ -1,0 +1,25 @@
+.mdr-paragraph {
+  font-size: 16px;
+  margin: 0 0 20px;
+}
+
+.mdr-paragraph a {
+  color: var(--mdr-primary);
+  text-decoration: none;
+  border-bottom: 1px solid var(--mdr-primary-glow);
+  font-weight: 500;
+}
+
+.mdr-paragraph a:hover {
+  border-bottom-color: var(--mdr-primary);
+}
+
+.mdr-paragraph code {
+  background: var(--mdr-code-bg);
+  border: 1px solid var(--mdr-code-border);
+  border-radius: 4px;
+  color: var(--mdr-text-highlight);
+  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.9em;
+  padding: 0.15em 0.35em;
+}

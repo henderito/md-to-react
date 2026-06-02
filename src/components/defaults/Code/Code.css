@@ -1,0 +1,11 @@
+.mdr-code {
+  background: var(--mdr-code-bg);
+  border: 1px solid var(--mdr-code-border);
+  border-radius: 8px;
+  color: var(--mdr-text-highlight);
+  overflow: auto;
+  padding: 18px;
+  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Monaco, Consolas, monospace;
+  font-size: 14px;
+  margin: 0 0 24px;
+}

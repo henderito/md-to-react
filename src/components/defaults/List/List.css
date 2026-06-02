@@ -1,0 +1,28 @@
+.mdr-list {
+  font-size: 16px;
+  display: grid;
+  gap: 10px;
+  margin: 0 0 24px;
+  padding-left: 22px;
+}
+
+.mdr-list a {
+  color: var(--mdr-primary);
+  text-decoration: none;
+  border-bottom: 1px solid var(--mdr-primary-glow);
+  font-weight: 500;
+}
+
+.mdr-list a:hover {
+  border-bottom-color: var(--mdr-primary);
+}
+
+.mdr-list code {
+  background: var(--mdr-code-bg);
+  border: 1px solid var(--mdr-code-border);
+  border-radius: 4px;
+  color: var(--mdr-text-highlight);
+  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.9em;
+  padding: 0.15em 0.35em;
+}
