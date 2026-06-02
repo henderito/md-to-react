@@ -1,0 +1,23 @@
+.mdr-callout {
+  border-radius: 6px;
+  margin: 28px 0;
+  padding: 16px 20px;
+  display: flex;
+  gap: 12px;
+  font-size: 15px;
+}
+
+.mdr-theme--antigravity .mdr-callout {
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.05);
+}
+
+.mdr-theme--classic .mdr-callout {
+  background: #f0f7ff;
+  border-left: 4px solid #0969da;
+  border-top: 1px solid rgba(9, 105, 218, 0.1);
+  border-right: 1px solid rgba(9, 105, 218, 0.1);
+  border-bottom: 1px solid rgba(9, 105, 218, 0.1);
+  color: #091e42;
+}

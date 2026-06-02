@@ -1,0 +1,117 @@
+.mdr-terminal {
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 28px 0;
+  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Monaco, Consolas, monospace;
+}
+
+/* Antigravity Terminal (Sleek dark code editor layout) */
+.mdr-theme--antigravity .mdr-terminal {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.mdr-theme--antigravity .mdr-terminal__header {
+  background: #161b22;
+  border-bottom: 1px solid #30363d;
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+}
+
+.mdr-theme--antigravity .mdr-terminal__button {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.mdr-theme--antigravity .mdr-terminal__button--close { background: #f85149; }
+.mdr-theme--antigravity .mdr-terminal__button--minimize { background: #f0883e; }
+.mdr-theme--antigravity .mdr-terminal__button--maximize { background: #56d364; }
+
+.mdr-theme--antigravity .mdr-terminal__title {
+  color: #8b9bb4;
+  font-size: 12px;
+  margin-left: 8px;
+}
+
+.mdr-theme--antigravity .mdr-terminal__body {
+  padding: 18px;
+  font-size: 14px;
+}
+
+.mdr-theme--antigravity .mdr-terminal__line {
+  margin-bottom: 6px;
+  line-height: 1.5;
+}
+
+.mdr-theme--antigravity .mdr-terminal__line--command {
+  color: #58a6ff;
+}
+
+.mdr-theme--antigravity .mdr-terminal__line--output {
+  color: #c9d2e3;
+}
+
+.mdr-theme--antigravity .mdr-terminal__prompt {
+  color: #3fb950;
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+/* Classic Terminal (Light Github-like CLI) */
+.mdr-theme--classic .mdr-terminal {
+  background: #f6f8fa;
+  border: 1px solid #d0d7de;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.mdr-theme--classic .mdr-terminal__header {
+  background: #eaeef2;
+  border-bottom: 1px solid #d0d7de;
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+}
+
+.mdr-theme--classic .mdr-terminal__button {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
+  background: #d0d7de;
+}
+
+.mdr-theme--classic .mdr-terminal__title {
+  color: #57606a;
+  font-size: 12px;
+  margin-left: 8px;
+}
+
+.mdr-theme--classic .mdr-terminal__body {
+  padding: 18px;
+  font-size: 14px;
+}
+
+.mdr-theme--classic .mdr-terminal__line {
+  margin-bottom: 6px;
+  line-height: 1.5;
+}
+
+.mdr-theme--classic .mdr-terminal__line--command {
+  color: #0969da;
+}
+
+.mdr-theme--classic .mdr-terminal__line--output {
+  color: #24292f;
+}
+
+.mdr-theme--classic .mdr-terminal__prompt {
+  color: #1a7f37;
+  font-weight: bold;
+  margin-right: 8px;
+}

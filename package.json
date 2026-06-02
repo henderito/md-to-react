@@ -34,7 +34,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.json && cp src/style.css dist/style.css",
+    "build": "tsc -p tsconfig.json && cat src/styles/theme.css $(find src/components -name '*.css') > dist/style.css",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",

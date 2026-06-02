@@ -1,0 +1,61 @@
+/* ==========================================
+   GLOBAL VARIABLES & BASICS (THEME SPECIFIC)
+   ========================================== */
+
+/* --- ANTIGRAVITY THEME --- */
+.mdr-theme--antigravity {
+  --mdr-bg: #0b0f19;
+  --mdr-text: #c9d2e3;
+  --mdr-text-highlight: #ffffff;
+  --mdr-subtext: #8b9bb4;
+  --mdr-border: rgba(255, 255, 255, 0.08);
+  --mdr-primary: #38bdf8;
+  --mdr-primary-glow: rgba(56, 189, 248, 0.15);
+  --mdr-code-bg: #0f1422;
+  --mdr-code-border: rgba(255, 255, 255, 0.08);
+  --mdr-font: Inter, ui-sans-serif, system-ui, sans-serif;
+  --mdr-card-bg: rgba(255, 255, 255, 0.02);
+
+  background-color: var(--mdr-bg);
+}
+
+/* --- CLASSIC THEME --- */
+.mdr-theme--classic {
+  --mdr-bg: #ffffff;
+  --mdr-text: #24292f;
+  --mdr-text-highlight: #091e42;
+  --mdr-subtext: #57606a;
+  --mdr-border: #d0d7de;
+  --mdr-primary: #0969da;
+  --mdr-primary-glow: rgba(9, 105, 218, 0.1);
+  --mdr-code-bg: #f6f8fa;
+  --mdr-code-border: #d0d7de;
+  --mdr-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --mdr-card-bg: #ffffff;
+
+  background-color: var(--mdr-bg);
+}
+
+/* ==========================================
+   SHARED TYPOGRAPHY & LAYOUTS
+   ========================================== */
+.mdr-page,
+.mdr-component {
+  color: var(--mdr-text);
+  font-family: var(--mdr-font);
+  line-height: 1.65;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.mdr-page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+.mdr-component {
+  background: var(--mdr-card-bg);
+  border: 1px solid var(--mdr-border);
+  border-radius: 8px;
+  padding: 24px;
+}
