@@ -1,0 +1,65 @@
+{
+  "name": "@henderito/md-to-react",
+  "author": {
+    "email": "gonzahender@gmail.com",
+    "name": "Gonzalo Henderson"
+  },
+  "license": "MIT",
+  "version": "0.0.1",
+  "description": "Convert structured Markdown templates into styled React pages or components.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/henderito/md-to-react.git"
+  },
+  "bugs": {
+    "url": "https://github.com/henderito/md-to-react/issues"
+  },
+  "homepage": "https://github.com/henderito/md-to-react#readme",
+  "type": "module",
+  "sideEffects": [
+    "./dist/style.css"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./style.css": "./dist/style.css"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json && cp src/style.css dist/style.css",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "keywords": [
+    "markdown",
+    "react",
+    "templates",
+    "portfolio",
+    "mdx"
+  ],
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "devDependencies": {
+    "@types/marked": "^5.0.2",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "jsdom": "^27.0.1",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "typescript": "~6.0.2",
+    "vitest": "^3.2.4"
+  },
+  "dependencies": {
+    "marked": "^18.0.4"
+  }
+}
