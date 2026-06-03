@@ -34,7 +34,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.json && cat src/styles/theme.css $(find src/components -name '*.css') > dist/style.css",
+    "build": "tsc -p tsconfig.json && copyfiles -u 1 \"src/**/*.css\" dist && cat src/styles/theme.css $(find src/components -name '*.css') > dist/style.css",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -58,6 +58,7 @@
     "@types/marked": "^5.0.2",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "copyfiles": "^2.4.1",
     "husky": "^9.1.7",
     "jsdom": "^27.0.1",
     "react": "^19.2.7",
