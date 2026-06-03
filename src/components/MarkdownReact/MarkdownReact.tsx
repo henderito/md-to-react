@@ -1,4 +1,4 @@
-import { createElement, type ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import type { Tokens } from 'marked';
 import { parseMarkdown } from '../../parser.js';
 import { getTemplate } from '../../templates.js';

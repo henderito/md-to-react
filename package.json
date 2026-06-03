@@ -33,10 +33,21 @@
     "dist",
     "README.md"
   ],
+  "engines": {
+    "node": "^20.19.0 || ^22.13.0 || >=24.0.0"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.json && copyfiles -u 1 \"src/**/*.css\" dist && cat src/styles/theme.css $(find src/components -name '*.css') > dist/style.css",
+    "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
+    "test:unit": "vitest run src/parser.test.ts",
+    "test:integration": "vitest run src/components/MarkdownReact/MarkdownReact.test.tsx",
+    "scan:secrets": "node scripts/scan-secrets.mjs",
+    "scan:container": "node scripts/scan-container.mjs",
+    "audit": "npm audit --audit-level=high",
+    "smoke": "node scripts/smoke-package.mjs",
+    "rollback:npm": "node scripts/rollback-npm.mjs",
     "test:watch": "vitest",
     "prepare": "husky",
     "commit": "commit"
@@ -55,16 +66,20 @@
     "@commitlint/cli": "^21.0.2",
     "@commitlint/config-conventional": "^21.0.2",
     "@commitlint/prompt-cli": "^21.0.2",
+    "@eslint/js": "^9.39.4",
     "@types/marked": "^5.0.2",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "copyfiles": "^2.4.1",
+    "eslint": "^9.39.4",
+    "globals": "^17.6.0",
     "husky": "^9.1.7",
     "jsdom": "^27.0.1",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "typescript": "~6.0.2",
-    "vitest": "^3.2.4"
+    "typescript-eslint": "^8.60.1",
+    "vitest": "^4.1.8"
   },
   "dependencies": {
     "marked": "^18.0.4"

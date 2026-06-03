@@ -170,9 +170,9 @@ The package uses [marked](https://marked.js.org/) to parse Markdown into a spec-
 ### Contributing
 This repository is configured with local hooks and automated CI/CD:
 - **Husky Hooks**: 
-  - `pre-commit`: Automatically runs typechecking, tests (`vitest`), and builds the package.
+  - `pre-commit`: Automatically runs linting, typechecking, tests (`vitest`), and builds the package.
   - `prepare-commit-msg`: Intercepts `git commit` to ask if you want a version bump. If so, it appends the correct tag (`[patch]`, `[minor]`, or `[major]`) to your commit message.
-- **CI/CD**: Pushes and PRs to `master` trigger an automated GitHub Actions pipeline. If a version bump tag is detected in the commit message and `changelog.md` is modified, the pipeline automatically bumps the version, pushes tags, and publishes the package to NPM.
+- **CI/CD**: PRs and pushes to `main`, `master`, and `develop` run linting, typechecking, unit tests, integration tests, dependency/secret/container scans, package build, SBOM generation, artifact smoke tests, and an npm publish dry-run. Releases from `main` or `master` are prepared by Release Please, gated by the `production` GitHub Environment, published to npm with provenance, smoke-tested, monitored, and rolled back by moving the npm dist-tag if unhealthy.
 
 ## Current Scope
 

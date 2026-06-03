@@ -1,44 +1,185 @@
 name: CI/CD Pipeline
 
 on:
-  push:
-    branches:
-      - master
   pull_request:
     branches:
+      - main
       - master
+      - develop
+  push:
+    branches:
+      - main
+      - master
+      - develop
+  workflow_dispatch:
+
+concurrency:
+  group: ci-cd-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: '22.x'
+  PACKAGE_NAME: '@henderito/md-to-react'
+  NPM_DIST_TAG: latest
 
 jobs:
-  test:
+  quality:
+    name: Lint, typecheck, and tests
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
+      - name: Checkout code
         uses: actions/checkout@v4
-          
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
-          
-      - name: Install Dependencies
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
         run: npm ci
-        
+
+      - name: Lint
+        run: npm run lint
+
       - name: Typecheck
         run: npm run typecheck
 
-      - name: Run Tests
-        run: npm run test
-        
-      - name: Build Package
+      - name: Unit tests
+        run: npm run test:unit
+
+      - name: Integration tests
+        run: npm run test:integration
+
+  scan:
+    name: Dependency, secret, and container scans
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Review dependency changes
+        if: github.event_name == 'pull_request'
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: high
+
+      - name: Audit installed dependencies
+        run: npm run audit
+
+      - name: Scan tracked files for secrets
+        run: npm run scan:secrets
+
+      - name: Scan container definitions
+        run: npm run scan:container
+
+  build_artifact:
+    name: Build and prove artifact
+    runs-on: ubuntu-latest
+    needs:
+      - quality
+      - scan
+    permissions:
+      attestations: write
+      contents: read
+      id-token: write
+    outputs:
+      tarball_name: ${{ steps.artifact.outputs.tarball_name }}
+      version: ${{ steps.artifact.outputs.version }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build package
         run: npm run build
 
-  release:
-    needs: test
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+      - name: Package artifact and SBOM
+        id: artifact
+        run: |
+          mkdir -p artifacts
+          npm sbom --sbom-format cyclonedx --json > artifacts/npm-sbom.json
+          HUSKY=0 npm pack --ignore-scripts --pack-destination artifacts
+          TARBALL="$(find artifacts -maxdepth 1 -name '*.tgz' -print -quit)"
+          npm run smoke -- "$TARBALL"
+          echo "tarball_name=$(basename "$TARBALL")" >> "$GITHUB_OUTPUT"
+          echo "version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+
+      - name: Upload package artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-package
+          if-no-files-found: error
+          path: |
+            artifacts/*.tgz
+            artifacts/npm-sbom.json
+            dist
+
+      - name: Attest package provenance
+        if: github.event_name != 'pull_request'
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: artifacts/*.tgz
+
+  preview_deploy:
+    name: Preview deployment
     runs-on: ubuntu-latest
+    needs:
+      - build_artifact
+    steps:
+      - name: Download package artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: npm-package
+          path: artifacts
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          registry-url: https://registry.npmjs.org
+
+      - name: Preview npm publish
+        run: npm publish "./artifacts/${{ needs.build_artifact.outputs.tarball_name }}" --dry-run --access public
+
+  release:
+    name: Prepare release
+    runs-on: ubuntu-latest
+    needs:
+      - preview_deploy
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
     permissions:
       contents: write
       pull-requests: write
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+      version: ${{ steps.release.outputs.version }}
     steps:
       - name: Release Please
         id: release
@@ -46,27 +187,140 @@ jobs:
         with:
           release-type: node
 
-      - name: Checkout Code
-        if: ${{ steps.release.outputs.release_created }}
+  deploy:
+    name: Deploy to npm
+    runs-on: ubuntu-latest
+    needs:
+      - build_artifact
+      - release
+    if: needs.release.outputs.release_created == 'true'
+    environment:
+      name: production
+      url: https://www.npmjs.com/package/@henderito/md-to-react
+    permissions:
+      contents: read
+      id-token: write
+    outputs:
+      version: ${{ steps.metadata.outputs.version }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download package artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: npm-package
+          path: artifacts
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          registry-url: https://registry.npmjs.org
+
+      - name: Publish package with provenance
+        run: npm publish "./artifacts/${{ needs.build_artifact.outputs.tarball_name }}" --access public --provenance --tag "$NPM_DIST_TAG"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Record deployment metadata
+        id: metadata
+        run: |
+          VERSION="${{ needs.release.outputs.version }}"
+          if [ -z "$VERSION" ]; then
+            VERSION="${{ needs.build_artifact.outputs.version }}"
+          fi
+          {
+            echo "package=${PACKAGE_NAME}"
+            echo "version=${VERSION}"
+            echo "tag=${NPM_DIST_TAG}"
+            echo "git_sha=${GITHUB_SHA}"
+            echo "actor=${GITHUB_ACTOR}"
+            echo "run_url=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          } > deployment-record.txt
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+
+      - name: Upload deployment record
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployment-record
+          if-no-files-found: error
+          path: deployment-record.txt
+
+  smoke_test:
+    name: Production smoke test
+    runs-on: ubuntu-latest
+    needs:
+      - deploy
+    if: needs.deploy.result == 'success'
+    steps:
+      - name: Checkout smoke harness
         uses: actions/checkout@v4
 
       - name: Setup Node.js
-        if: ${{ steps.release.outputs.release_created }}
         uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
-          registry-url: 'https://registry.npmjs.org'
+          node-version: ${{ env.NODE_VERSION }}
+          registry-url: https://registry.npmjs.org
 
-      - name: Install Dependencies
-        if: ${{ steps.release.outputs.release_created }}
-        run: npm ci
+      - name: Install and import published package
+        run: |
+          TMP_DIR="$(mktemp -d)"
+          cd "$TMP_DIR"
+          npm init -y
+          npm install --ignore-scripts --no-audit --no-fund "${PACKAGE_NAME}@${PACKAGE_VERSION}" react react-dom
+          PACKAGE_ENTRY="${TMP_DIR}/node_modules/${PACKAGE_NAME}/dist/index.js"
+          PACKAGE_IMPORT="file://${PACKAGE_ENTRY}" node --import "${GITHUB_WORKSPACE}/scripts/register-ignore-css-loader.mjs" "${GITHUB_WORKSPACE}/scripts/smoke-runtime.mjs"
+        env:
+          PACKAGE_VERSION: ${{ needs.deploy.outputs.version }}
 
-      - name: Build Package
-        if: ${{ steps.release.outputs.release_created }}
-        run: npm run build
+  monitor:
+    name: Monitor production package
+    runs-on: ubuntu-latest
+    needs:
+      - deploy
+      - smoke_test
+    if: needs.smoke_test.result == 'success'
+    steps:
+      - name: Verify npm registry health
+        run: |
+          for attempt in 1 2 3 4 5; do
+            PUBLISHED_VERSION="$(npm view "${PACKAGE_NAME}@${PACKAGE_VERSION}" version 2>/dev/null || true)"
+            TAG_VERSION="$(npm view "${PACKAGE_NAME}" "dist-tags.${NPM_DIST_TAG}" 2>/dev/null || true)"
+            if [ "$PUBLISHED_VERSION" = "$PACKAGE_VERSION" ] && [ "$TAG_VERSION" = "$PACKAGE_VERSION" ]; then
+              echo "npm registry reports ${PACKAGE_NAME}@${PACKAGE_VERSION} on ${NPM_DIST_TAG}."
+              exit 0
+            fi
+            echo "Registry not healthy yet; retry ${attempt}/5."
+            sleep 30
+          done
+          echo "Published package did not become healthy on npm."
+          exit 1
+        env:
+          PACKAGE_VERSION: ${{ needs.deploy.outputs.version }}
 
-      - name: Publish to npm
-        if: ${{ steps.release.outputs.release_created }}
-        run: npm publish --access public
+  rollback:
+    name: Roll back unhealthy npm deploy
+    runs-on: ubuntu-latest
+    needs:
+      - deploy
+      - smoke_test
+      - monitor
+    if: always() && needs.deploy.result == 'success' && (needs.smoke_test.result == 'failure' || needs.monitor.result == 'failure')
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          registry-url: https://registry.npmjs.org
+
+      - name: Move npm dist-tag back to last known healthy version
+        run: npm run rollback:npm
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          PACKAGE_VERSION: ${{ needs.deploy.outputs.version }}
+          NPM_ROLLBACK_VERSION: ${{ vars.NPM_ROLLBACK_VERSION }}
+          ROLLBACK_DRY_RUN: 'false'
