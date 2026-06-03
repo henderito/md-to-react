@@ -156,7 +156,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: npm-package
-          path: artifacts
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -210,7 +209,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: npm-package
-          path: artifacts
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
