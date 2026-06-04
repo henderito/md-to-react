@@ -5,7 +5,7 @@
     "name": "Gonzalo Henderson"
   },
   "license": "MIT",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Convert structured Markdown templates into styled React pages or components.",
   "repository": {
     "type": "git",
