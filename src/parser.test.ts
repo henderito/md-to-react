@@ -133,4 +133,18 @@ This is inside a directive block.
       items: [],
     });
   });
+
+  it('should parse inline icons', () => {
+    const markdown = `Here is an icon :lucide-home: in text.`;
+    const doc = parseMarkdown(markdown);
+    
+    expect(doc.nodes[0]).toMatchObject({
+      type: 'paragraph',
+      tokens: [
+        { type: 'text', text: 'Here is an icon ' },
+        { type: 'icon', name: 'lucide-home' },
+        { type: 'text', text: ' in text.' }
+      ]
+    });
+  });
 });

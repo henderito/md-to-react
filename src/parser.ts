@@ -138,7 +138,24 @@ const directiveExtension = {
   }
 };
 
-marked.use({ extensions: [directiveExtension] });
+const iconExtension = {
+  name: 'icon',
+  level: 'inline' as const,
+  start(src: string) { return src.match(/:[a-zA-Z0-9_-]+:/)?.index; },
+  tokenizer(src: string) {
+    const match = /^:([a-zA-Z0-9_-]+):/.exec(src);
+    if (match) {
+      return {
+        type: 'icon',
+        raw: match[0],
+        name: match[1],
+      };
+    }
+    return undefined;
+  }
+};
+
+marked.use({ extensions: [directiveExtension, iconExtension] });
 
 export function parseMarkdown(markdown: string): MarkdownDocument {
   const { frontmatter, body } = splitFrontmatter(markdown);

@@ -19,7 +19,13 @@ export interface DirectiveNode {
   items: string[];
 }
 
-export type MarkdownNode = Token | DirectiveNode;
+export interface IconNode {
+  type: 'icon';
+  raw: string;
+  name: string;
+}
+
+export type MarkdownNode = Token | DirectiveNode | IconNode;
 
 export interface MarkdownDocument {
   frontmatter: Frontmatter;
@@ -51,6 +57,7 @@ export interface RendererComponents {
   code: ComponentType<CodeComponentProps>;
   table: ComponentType<TableComponentProps>;
   blockquote: ComponentType<BlockquoteComponentProps>;
+  icon: ComponentType<IconComponentProps>;
 }
 
 export interface HeadingComponentProps {
@@ -87,6 +94,10 @@ export interface BlockquoteComponentProps {
   children: ReactNode;
 }
 
+export interface IconComponentProps {
+  node: IconNode;
+}
+
 export type ThemeName = 'antigravity' | 'classic';
 
 export interface MarkdownReactProps {
@@ -95,6 +106,7 @@ export interface MarkdownReactProps {
   components?: Partial<RendererComponents>;
   className?: string;
   theme?: ThemeName;
+  themeOverrides?: Record<string, string | number>;
 }
 
 export interface CompileOptions {
@@ -102,4 +114,5 @@ export interface CompileOptions {
   template?: string | TemplateDefinition;
   includeCssImport?: boolean;
   theme?: ThemeName;
+  themeOverrides?: Record<string, string | number>;
 }

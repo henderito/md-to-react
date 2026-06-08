@@ -8,6 +8,7 @@
 .mdr-heading--1 {
   font-size: 42px;
   margin: 0 0 24px;
+  color: var(--mdr-title-color);
 }
 
 .mdr-heading--2 {
@@ -15,9 +16,11 @@
   margin: 44px 0 16px;
   border-bottom: 1px solid var(--mdr-border);
   padding-bottom: 8px;
+  color: var(--mdr-subtitle-color);
 }
 
 .mdr-heading--3 {
   font-size: 20px;
   margin: 32px 0 12px;
+  color: var(--mdr-subtitle-color);
 }

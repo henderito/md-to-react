@@ -7,6 +7,10 @@ import { TerminalBlock } from './components/blocks/Terminal/Terminal.js';
 import { FileBlock } from './components/blocks/File/File.js';
 import { AlertBlock } from './components/blocks/Alert/Alert.js';
 import { BadgeBlock } from './components/blocks/Badge/Badge.js';
+import { ExperienceBlock } from './components/blocks/Experience/Experience.js';
+import { SkillMatrixBlock } from './components/blocks/SkillMatrix/SkillMatrix.js';
+import { ProjectCardBlock } from './components/blocks/ProjectCard/ProjectCard.js';
+import { ProfileHeaderBlock } from './components/blocks/ProfileHeader/ProfileHeader.js';
 
 export const templates: TemplateDefinition[] = [
   {
@@ -52,6 +56,22 @@ export const templates: TemplateDefinition[] = [
       file: FileBlock,
       alert: AlertBlock,
       badge: BadgeBlock,
+    },
+  },
+  {
+    id: 'online-cv',
+    name: 'Online CV',
+    description: 'A structural, typography-heavy resume layout with experience, skills, projects, and a profile header.',
+    layout: 'page',
+    className: 'mdr-page mdr-template--cv',
+    blocks: {
+      callout: CalloutBlock,
+      timeline: TimelineBlock,
+      badge: BadgeBlock,
+      experience: ExperienceBlock,
+      skillmatrix: SkillMatrixBlock,
+      projectcard: ProjectCardBlock,
+      profileheader: ProfileHeaderBlock,
     },
   },
 ];

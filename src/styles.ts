@@ -543,6 +543,215 @@ const css = `
   color: #24292f;
   border: 1px solid #d0d7de;
 }
+
+/* --- PROFILE HEADER BLOCK --- */
+.mdr-profile-header {
+  margin: 40px 0 60px;
+  border-bottom: 2px solid var(--mdr-border);
+  padding-bottom: 24px;
+}
+
+.mdr-profile-header__name {
+  font-size: 48px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  margin: 0 0 16px 0;
+  color: var(--mdr-text-highlight);
+  text-transform: uppercase;
+}
+
+.mdr-profile-header__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Monaco, Consolas, monospace;
+  font-size: 14px;
+}
+
+.mdr-profile-header__meta-item {
+  color: var(--mdr-text);
+  border-right: 1px solid var(--mdr-border);
+  padding-right: 16px;
+}
+
+.mdr-profile-header__meta-item:last-child {
+  border-right: none;
+  padding-right: 0;
+}
+
+.mdr-profile-header__meta-item a {
+  color: var(--mdr-primary);
+  text-decoration: none;
+}
+
+.mdr-profile-header__meta-item a:hover {
+  text-decoration: underline;
+}
+
+/* --- EXPERIENCE BLOCK --- */
+.mdr-experience {
+  border-top: 1px solid var(--mdr-border);
+  padding: 24px 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 600px) {
+  .mdr-experience {
+    grid-template-columns: 250px 1fr;
+    gap: 32px;
+  }
+}
+
+.mdr-experience__header {
+  margin-bottom: 12px;
+}
+
+.mdr-experience__role {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 4px 0;
+  color: var(--mdr-text-highlight);
+  line-height: 1.3;
+}
+
+.mdr-experience__company {
+  font-size: 14px;
+  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Monaco, Consolas, monospace;
+  color: var(--mdr-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.mdr-experience__list {
+  margin: 0;
+  padding-left: 20px;
+  list-style-type: square;
+}
+
+.mdr-experience__item {
+  margin-bottom: 8px;
+  color: var(--mdr-text);
+  line-height: 1.6;
+}
+
+/* --- SKILL MATRIX BLOCK --- */
+.mdr-skill-matrix {
+  border: 1px solid var(--mdr-border);
+  margin: 32px 0;
+  background: var(--mdr-card-bg);
+}
+
+.mdr-skill-matrix__category {
+  background: var(--mdr-code-bg);
+  padding: 12px 16px;
+  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Monaco, Consolas, monospace;
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--mdr-border);
+  color: var(--mdr-text-highlight);
+}
+
+.mdr-skill-matrix__items {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mdr-skill-matrix__item {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 600px) {
+  .mdr-skill-matrix__item {
+    flex-direction: row;
+    align-items: baseline;
+  }
+}
+
+.mdr-skill-matrix__item-name {
+  font-weight: 700;
+  color: var(--mdr-text-highlight);
+  min-width: 180px;
+  margin-bottom: 4px;
+}
+
+.mdr-skill-matrix__item-value {
+  color: var(--mdr-text);
+  line-height: 1.5;
+}
+
+/* --- PROJECT CARD BLOCK --- */
+.mdr-project-card {
+  border: 2px solid var(--mdr-border);
+  margin: 32px 0;
+  background: var(--mdr-card-bg);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.mdr-theme--antigravity .mdr-project-card:hover {
+  border-color: var(--mdr-primary);
+  transform: translate(-4px, -4px);
+  box-shadow: 4px 4px 0 var(--mdr-primary);
+}
+
+.mdr-theme--classic .mdr-project-card:hover {
+  border-color: var(--mdr-text-highlight);
+  transform: translate(-4px, -4px);
+  box-shadow: 4px 4px 0 var(--mdr-text-highlight);
+}
+
+.mdr-project-card__header {
+  border-bottom: 2px solid var(--mdr-border);
+  padding: 16px 20px;
+  background: var(--mdr-code-bg);
+}
+
+.mdr-project-card__title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--mdr-text-highlight);
+  letter-spacing: -0.02em;
+}
+
+.mdr-project-card__body {
+  padding: 20px;
+}
+
+.mdr-project-card__details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mdr-project-card__detail {
+  color: var(--mdr-text);
+  line-height: 1.6;
+}
+
+.mdr-project-card__detail a {
+  display: inline-block;
+  margin-top: 8px;
+  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Monaco, Consolas, monospace;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--mdr-bg);
+  background: var(--mdr-text-highlight);
+  padding: 6px 12px;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background 0.2s ease;
+}
+
+.mdr-project-card__detail a:hover {
+  background: var(--mdr-primary);
+}
 `;
 
 let injected = false;

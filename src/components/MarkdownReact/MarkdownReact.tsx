@@ -20,6 +20,7 @@ import { DefaultListItem } from '../defaults/ListItem/ListItem.js';
 import { DefaultCode } from '../defaults/Code/Code.js';
 import { DefaultTable } from '../defaults/Table/Table.js';
 import { DefaultBlockquote } from '../defaults/Blockquote/Blockquote.js';
+import { DefaultIcon } from '../defaults/Icon/Icon.js';
 
 if (typeof window !== 'undefined') {
   injectStyles();
@@ -38,6 +39,7 @@ const defaultComponents: RendererComponents = {
   code: DefaultCode,
   table: DefaultTable,
   blockquote: DefaultBlockquote,
+  icon: DefaultIcon,
 };
 
 function renderTokens(
@@ -134,6 +136,12 @@ function renderNode(
   }
 
   // Inline elements
+  if (node.type === 'icon') {
+    const Icon = components.icon;
+    // @ts-expect-error Types
+    return <Icon node={node} key={index} />;
+  }
+
   if (node.type === 'text' || node.type === 'escape' || node.type === 'html') {
     const textNode = node as Tokens.Text | Tokens.Escape | Tokens.HTML;
     if ('tokens' in textNode && textNode.tokens) {
@@ -207,14 +215,19 @@ export function MarkdownReact({
   components,
   className,
   theme = 'antigravity',
+  themeOverrides,
 }: MarkdownReactProps) {
   const document = parseMarkdown(markdown);
   const resolvedTemplate = resolveTemplate(template);
   const resolvedComponents = { ...defaultComponents, ...components };
   const rootClassName = [resolvedTemplate.className, `mdr-theme--${theme}`, className].filter(Boolean).join(' ');
 
+  const style = themeOverrides
+    ? Object.fromEntries(Object.entries(themeOverrides).map(([k, v]) => [`--mdr-${k}`, v]))
+    : undefined;
+
   return (
-    <article className={rootClassName}>
+    <article className={rootClassName} style={style as React.CSSProperties}>
       {renderTokens(document.nodes, resolvedTemplate, resolvedComponents, document)}
     </article>
   );
@@ -230,11 +243,13 @@ export function compileMarkdownToModule(markdown: string, options: CompileOption
   const componentName = options.componentName ?? 'MarkdownPage';
   const template = typeof options.template === 'string' ? options.template : options.template?.id;
   const theme = options.theme;
+  const themeOverrides = options.themeOverrides ? JSON.stringify(options.themeOverrides) : null;
 
   const props = [
     `markdown={markdown}`,
     template ? `template="${template}"` : null,
     theme ? `theme="${theme}"` : null,
+    themeOverrides ? `themeOverrides={${themeOverrides}}` : null,
   ].filter(Boolean).join(' ');
 
   return `import { MarkdownReact } from '@henderito/md-to-react';
